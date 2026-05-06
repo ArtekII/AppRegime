@@ -22,7 +22,6 @@ CREATE TABLE statut (
 CREATE TABLE objectifs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type ENUM('Augmenter son poids', 'Réduire son poids', 'Atteindre son IMC idéal') NOT NULL,
-    calories_journalieres INT NOT NULL,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP   
 );
 
@@ -52,7 +51,7 @@ CREATE TABLE regimes (
     prix DECIMAL(10,2) NOT NULL,
     pourcentage_viandes FLOAT NOT NULL,
     pourcentage_poissons FLOAT NOT NULL,
-    pourcentage_vollailes FLOAT NOT NULL,
+    pourcentage_volailles FLOAT NOT NULL,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -77,10 +76,19 @@ CREATE TABLE objectifs_regimes_activite(
 CREATE TABLE code (
     id INT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(255) NOT NULL UNIQUE,
-    utilisateur_id INT NOT NULL,
+    utilisateur_id INT NULL,
     montant FLOAT NOT NULL,
     utilise BOOLEAN NOT NULL DEFAULT FALSE,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_utilisation TIMESTAMP NULL,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
+);
+
+CREATE TABLE abonnements_gold (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    prix DECIMAL(10,2) NOT NULL,
+    date_activation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
 
