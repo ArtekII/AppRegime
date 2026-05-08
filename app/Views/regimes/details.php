@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&eacute;tail du r&eacute;gime</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 32px;
-            color: #222;
-        }
+<?= $this->extend('layouts/main') ?>
 
-        .section {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            padding: 18px;
-        }
+<?= $this->section('title') ?>D&eacute;tail du r&eacute;gime<?= $this->endSection() ?>
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th,
-        td {
-            border-bottom: 1px solid #eee;
-            padding: 10px;
-            text-align: left;
-        }
-
-        a {
-            color: #1d4ed8;
-        }
-    </style>
-</head>
-<body>
+<?= $this->section('content') ?>
     <p><a href="<?= previous_url() ?: site_url('suggestions') ?>">Retour</a></p>
 
     <h1><?= esc($regime['nom']) ?></h1>
@@ -73,5 +40,4 @@
             </table>
         <?php endif; ?>
     </section>
-</body>
-</html>
+<?= $this->endSection() ?>

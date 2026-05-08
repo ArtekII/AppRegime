@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informations physiques</title>
-</head>
-<body>
-    <h1>Brandy - Étape 2</h1>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('title') ?>Informations physiques<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+    <h1>Brandy - &Eacute;tape 2</h1>
     <fieldset>
         <h2>Informations physiques</h2>
         <?php if (session()->getFlashdata('error')): ?>
-            <p style="color: red;"><?= esc(session()->getFlashdata('error')) ?></p>
+            <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
         <?php endif; ?>
 
         <form action="<?= base_url('save') ?>" method="post">
@@ -27,5 +24,4 @@
             <input type="submit" value="Continuer vers le choix d'objectif">
         </form>
     </fieldset>
-</body>
-</html>
+<?= $this->endSection() ?>

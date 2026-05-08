@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentification</title>
-</head>
-<body>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('title') ?>Authentification<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <h1>Brandy</h1>
 
     <fieldset>
@@ -34,11 +31,10 @@
             <p>Mot de passe: <input type="password" name="login_password" required></p>
 
             <?php if (session()->getFlashdata('error')): ?>
-                <p style="color: red;"><?= esc(session()->getFlashdata('error')) ?></p>
+                <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
             <?php endif; ?>
 
             <input type="submit" value="Se connecter">
         </form>
     </fieldset>
-</body>
-</html>
+<?= $this->endSection() ?>

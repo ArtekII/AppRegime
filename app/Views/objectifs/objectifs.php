@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choix Objectif</title>
-</head>
-<body>
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('title') ?>Choix Objectif<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <h1>Veuillez choisir votre objectif :</h1>
 
     <?php if (session()->getFlashdata('error')): ?>
-        <p style="color: red;"><?= esc(session()->getFlashdata('error')) ?></p>
+        <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('success')): ?>
-        <p style="color: green;"><?= esc(session()->getFlashdata('success')) ?></p>
+        <p class="alert-success"><?= esc(session()->getFlashdata('success')) ?></p>
     <?php endif; ?>
 
     <?php if (! empty($objectifs)): ?>
@@ -36,7 +33,7 @@
                 <?php endforeach; ?>
             </select>
 
-            <p id="imc-cible-field" style="display: none;">
+            <p id="imc-cible-field" class="is-hidden">
                 <label for="imc_cible">IMC cible souhait&eacute;</label>
                 <input
                     type="number"
@@ -54,7 +51,9 @@
     <?php else: ?>
         <p>Aucun objectif disponible pour le moment.</p>
     <?php endif; ?>
+<?= $this->endSection() ?>
 
+<?= $this->section('scripts') ?>
     <script>
         const objectifSelect = document.getElementById('objectif');
         const imcCibleField = document.getElementById('imc-cible-field');
@@ -64,12 +63,13 @@
             const selectedOption = objectifSelect.options[objectifSelect.selectedIndex];
             const showField = selectedOption && selectedOption.dataset.imc === '1';
 
-            imcCibleField.style.display = showField ? 'block' : 'none';
+            imcCibleField.classList.toggle('is-hidden', ! showField);
             imcCibleInput.required = showField;
         }
 
-        objectifSelect.addEventListener('change', toggleImcCible);
-        toggleImcCible();
+        if (objectifSelect && imcCibleField && imcCibleInput) {
+            objectifSelect.addEventListener('change', toggleImcCible);
+            toggleImcCible();
+        }
     </script>
-</body>
-</html>
+<?= $this->endSection() ?>

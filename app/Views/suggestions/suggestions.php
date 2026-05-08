@@ -1,88 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pages D'accueil</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 32px;
-            color: #222;
-        }
+<?= $this->extend('layouts/main') ?>
 
-        form {
-            margin-bottom: 28px;
-        }
+<?= $this->section('title') ?>Pages D'accueil<?= $this->endSection() ?>
 
-        select,
-        button {
-            padding: 8px 10px;
-        }
-
-        .suggestions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .profile {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            padding: 18px;
-        }
-
-        .section {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 18px;
-        }
-
-        .section h2 {
-            margin-top: 0;
-        }
-
-        .item {
-            border-top: 1px solid #eee;
-            padding: 12px 0;
-        }
-
-        .item:first-of-type {
-            border-top: 0;
-        }
-
-        .muted {
-            color: #666;
-        }
-
-        .indicator {
-            display: inline-block;
-            border-radius: 6px;
-            margin-top: 10px;
-            padding: 8px 10px;
-        }
-
-        .indicator-ok {
-            background: #e6f6ea;
-            color: #166534;
-        }
-
-        .indicator-progress {
-            background: #fff7ed;
-            color: #9a3412;
-        }
-    </style>
-</head>
-<body>
-    <h1>Bienvenue! Nous avons des suggestions prête à être choisie.</h1>
+<?= $this->section('content') ?>
+    <h1>Bienvenue! Nous avons des suggestions pr&ecirc;tes &agrave; &ecirc;tre choisies.</h1>
 
     <?php if (session()->getFlashdata('success')): ?>
-        <p style="color: green;"><?= esc(session()->getFlashdata('success')) ?></p>
+        <p class="alert-success"><?= esc(session()->getFlashdata('success')) ?></p>
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('error')): ?>
-        <p style="color: red;"><?= esc(session()->getFlashdata('error')) ?></p>
+        <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
     <?php endif; ?>
 
     <?php if (! empty($utilisateurId)): ?>
@@ -106,7 +34,7 @@
             <?php endforeach; ?>
         </select>
 
-        <p id="imc-cible-field" style="display: none;">
+        <p id="imc-cible-field" class="is-hidden">
             <label for="imc_cible">IMC cible souhait&eacute;</label>
             <input
                 type="number"
@@ -195,7 +123,9 @@
             </section>
         </div>
     <?php endif; ?>
+<?= $this->endSection() ?>
 
+<?= $this->section('scripts') ?>
     <script>
         const objectifSelect = document.getElementById('objectif_id');
         const imcCibleField = document.getElementById('imc-cible-field');
@@ -205,12 +135,13 @@
             const selectedOption = objectifSelect.options[objectifSelect.selectedIndex];
             const showField = selectedOption && selectedOption.dataset.imc === '1';
 
-            imcCibleField.style.display = showField ? 'block' : 'none';
+            imcCibleField.classList.toggle('is-hidden', ! showField);
             imcCibleInput.required = showField;
         }
 
-        objectifSelect.addEventListener('change', toggleImcCible);
-        toggleImcCible();
+        if (objectifSelect && imcCibleField && imcCibleInput) {
+            objectifSelect.addEventListener('change', toggleImcCible);
+            toggleImcCible();
+        }
     </script>
-</body>
-</html>
+<?= $this->endSection() ?>
