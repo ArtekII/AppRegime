@@ -41,7 +41,7 @@ class ObjectifsController extends BaseController
         }
 
         if (! $this->validate($validationRules)) {
-            return redirect()->back()->withInput()->with('error', 'Sélection invalide, veuillez réessayer.');
+            return redirect()->back()->withInput()->with('error', 'Selection invalide, veuillez reessayer.');
         }
 
         $objectif = $this->objectifsModel->find($objectifId);
@@ -50,8 +50,19 @@ class ObjectifsController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Objectif introuvable.');
         }
 
+        $imcCible = null;
+        if ($this->isObjectifImcIdeal($objectif)) {
+            $imcCible = (float) $this->request->getPost('imc_cible');
+
+            if ($imcCible < 18.5 || $imcCible > 24.9) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Veuillez choisir un IMC cible entre 18.5 et 24.9.');
+            }
+        }
+
         if ($utilisateurId > 0) {
-            $saved = $this->utilisateursObjectifsModel->setObjectifForUser($utilisateurId, $objectifId);
+            $saved = $this->utilisateursObjectifsModel->setObjectifForUser($utilisateurId, $objectifId, $imcCible);
             if (! $saved) {
                 return redirect()->back()->withInput()->with('error', 'Impossible d\'enregistrer l\'objectif.');
             }
@@ -62,6 +73,11 @@ class ObjectifsController extends BaseController
             : site_url('suggestions?objectif_id=' . $objectifId);
 
         return redirect()->to($target)
-            ->with('success', 'Objectif sélectionné: ' . $objectif['type'] . '.');
+            ->with('success', 'Objectif selectionne: ' . $objectif['type'] . '.');
+    }
+
+    private function isObjectifImcIdeal(array $objectif): bool
+    {
+        return stripos($objectif['type'], 'IMC') !== false;
     }
 }

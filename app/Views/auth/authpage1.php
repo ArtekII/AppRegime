@@ -20,7 +20,7 @@
             <label><input type="radio" name="genre" value="Femme"> Femme</label>
             <label><input type="radio" name="genre" value="Autre"> Autre</label>
 
-            <input type="submit" value="S'inscrire (Étape 1)">
+            <input type="submit" value="Poursuivre l'inscription">
         </form>
     </fieldset>
 

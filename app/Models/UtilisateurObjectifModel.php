@@ -16,6 +16,7 @@ class UtilisateurObjectifModel extends Model
         'utilisateur_id',
         'objectif_id',
         'statut_id',
+        'imc_cible',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -30,6 +31,7 @@ class UtilisateurObjectifModel extends Model
         'utilisateur_id' => 'required|is_natural_no_zero',
         'objectif_id'    => 'required|is_natural_no_zero',
         'statut_id'      => 'required|is_natural_no_zero',
+        'imc_cible'      => 'permit_empty|decimal|greater_than_equal_to[18.5]|less_than_equal_to[24.9]',
     ];
 
     protected $validationMessages   = [];
@@ -46,7 +48,7 @@ class UtilisateurObjectifModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function setObjectifForUser(int $utilisateurId, int $objectifId): bool
+    public function setObjectifForUser(int $utilisateurId, int $objectifId, ?float $imcCible = null): bool
     {
         $existing = $this->where('utilisateur_id', $utilisateurId)->first();
         $statutModel = new StatutModel();
@@ -57,12 +59,14 @@ class UtilisateurObjectifModel extends Model
                 'utilisateur_id' => $utilisateurId,
                 'objectif_id' => $objectifId,
                 'statut_id' => $statutId,
+                'imc_cible' => $imcCible,
             ]) !== false;
         }
 
         return $this->update((int) $existing['id'], [
             'objectif_id' => $objectifId,
             'statut_id' => $statutId,
+            'imc_cible' => $imcCible,
         ]);
     }
 }

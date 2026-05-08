@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS utilisateur_objectif (
     utilisateur_id INT NOT NULL,
     objectif_id INT NOT NULL,
     statut_id INT NOT NULL,
+    imc_cible DECIMAL(4,1) NULL,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id) ON DELETE CASCADE,
     FOREIGN KEY (objectif_id) REFERENCES objectif(id) ON DELETE CASCADE,

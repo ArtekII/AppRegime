@@ -52,7 +52,12 @@ class ActiviteObjectifModel extends Model
 
     public function getActivitesByObjectifId(int $objectifId): array
     {
-        return $this->select('activite_objectif.*, activite_sportive.nom as activite_nom')
+        return $this->select(
+            'activite_objectif.*, activite_sportive.nom as activite_nom, '
+            . 'activite_sportive.calories_brulees_par_heure, '
+            . '(activite_sportive.calories_brulees_par_heure * activite_objectif.duree_minutes_par_seance / 60) as calories_par_seance, '
+            . '(activite_sportive.calories_brulees_par_heure * activite_objectif.duree_minutes_par_seance / 60 * activite_objectif.frequence_par_semaine) as calories_par_semaine'
+        )
             ->join('activite_sportive', 'activite_sportive.id = activite_objectif.activite_id')
             ->where('activite_objectif.objectif_id', $objectifId)
             ->findAll();

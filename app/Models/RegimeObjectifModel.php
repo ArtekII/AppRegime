@@ -52,8 +52,16 @@ class RegimeObjectifModel extends Model
 
     public function getRegimesByObjectifId(int $objectifId): array
     {
-        return $this->select('regime_objectif.*, regime.nom as regime_nom')
+        return $this->select(
+            'regime_objectif.*, regime.nom as regime_nom, prix_regimes.prix as prix'
+        )
             ->join('regime', 'regime.id = regime_objectif.regime_id')
+            ->join(
+                'prix_regimes',
+                'prix_regimes.regime_id = regime_objectif.regime_id '
+                . 'AND prix_regimes.duree_jours = regime_objectif.duree_jours',
+                'left'
+            )
             ->where('regime_objectif.objectif_id', $objectifId)
             ->findAll();
     }
