@@ -3,23 +3,23 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UserModel;
 
 class LoginController extends BaseController
 {
     public function index()
     {
-        return view('firstPage');
+        return view('auth/authpage1');
     }
 
-       public function process()
+    public function process()
     {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
-        $genre = $this ->request->getPost('genre');
-        $nom = $this ->request->getPost('nom');
-        
-        return view('secondPage', [
+        $genre = $this->request->getPost('genre');
+        $nom = $this->request->getPost('nom');
+
+        return view('auth/authpage2', [
             'email' => $email,
             'password' => $password,
             'genre' => $genre,
@@ -32,16 +32,21 @@ class LoginController extends BaseController
         $data = [
             'email'        => $this->request->getPost('email'),
             'nom'          => $this->request->getPost('nom'),
-            'mot_de_passe' => $this->request->getPost('password'), 
+            'mot_de_passe' => $this->request->getPost('password'),
             'genre'        => $this->request->getPost('genre'),
             'taille'       => $this->request->getPost('taille'),
             'poids'        => $this->request->getPost('poids'),
         ];
 
-        $userModel = new \App\Models\UserModel();
-        $userModel->insert($data);
+        $userModel = new UserModel();
+        $userId = $userModel->insert($data, true);
 
-        return "Inscription terminée avec succès pour " . esc($data['nom']) . " !";
+        if ($userId === false) {
+            return redirect()->back()->withInput()->with('error', 'Inscription impossible pour le moment.');
+        }
+
+        return redirect()->to(site_url('objectifs?utilisateur_id=' . $userId))
+            ->with('success', 'Inscription terminée. Choisissez maintenant votre objectif.');
     }
 
     public function authenticate()
@@ -49,11 +54,11 @@ class LoginController extends BaseController
         $email = $this->request->getPost('login_email');
         $password = $this->request->getPost('login_password');
 
-        $userModel = new \App\Models\UserModel();
-        
+        $userModel = new UserModel();
+
         $user = $userModel->where('email', $email)->first();
 
-        if ($user && $user['mot_de_passe'] === $password) {            
+        if ($user && $user['mot_de_passe'] === $password) {
             return "Connexion réussie ! Bienvenue " . esc($user['nom']) . ".";
         } else {
             return redirect()->back()->with('error', 'Email ou mot de passe incorrect.');
