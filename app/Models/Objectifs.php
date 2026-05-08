@@ -13,9 +13,7 @@ class Objectifs extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id',
         'type',
-        'date_creation',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -55,4 +53,11 @@ class Objectifs extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getSelectableObjectifs(): array
+    {
+        return $this->select('id, type')
+            ->orderBy('id', 'ASC')
+            ->findAll();
+    }
 }
