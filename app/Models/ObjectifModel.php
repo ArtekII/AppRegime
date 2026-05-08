@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Objectifs extends Model
+class ObjectifModel extends Model
 {
-    protected $table            = 'objectifs';
+    protected $table            = 'objectif';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -22,28 +22,22 @@ class Objectifs extends Model
     protected array $casts = [];
     protected array $castHandlers = [];
 
-    // Dates
-    protected $useTimestamps = true;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'date_creation';
-    protected $updatedField  = 'date_modification';
-    protected $deletedField  = 'date_suppression';
+    protected $useTimestamps = false;
 
-    // Validation
-    protected $validationRules      = [
-        'type' => 'required|string|max_length[255]',
+    protected $validationRules = [
+        'type' => 'required|in_list[Augmenter son poids,Réduire son poids,Atteindre son IMC idéal]',
     ];
-    protected $validationMessages   = [
+
+    protected $validationMessages = [
         'type' => [
             'required' => 'Le champ "type" est obligatoire.',
-            'string'   => 'Le champ "type" doit être une chaîne de caractères.',
-            'max_length' => 'Le champ "type" ne peut pas dépasser 255 caractères.',
+            'in_list'  => 'Le type d\'objectif sélectionné est invalide.',
         ],
     ];
+
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    // Callbacks
     protected $allowCallbacks = true;
     protected $beforeInsert   = [];
     protected $afterInsert    = [];

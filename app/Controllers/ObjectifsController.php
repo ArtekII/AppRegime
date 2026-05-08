@@ -3,18 +3,18 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Objectifs;
-use App\Models\UtilisateursObjectifsModel;
+use App\Models\ObjectifModel;
+use App\Models\UtilisateurObjectifModel;
 
 class ObjectifsController extends BaseController
 {
-    private Objectifs $objectifsModel;
-    private UtilisateursObjectifsModel $utilisateursObjectifsModel;
+    private ObjectifModel $objectifsModel;
+    private UtilisateurObjectifModel $utilisateursObjectifsModel;
 
     public function __construct()
     {
-        $this->objectifsModel = new Objectifs();
-        $this->utilisateursObjectifsModel = new UtilisateursObjectifsModel();
+        $this->objectifsModel = new ObjectifModel();
+        $this->utilisateursObjectifsModel = new UtilisateurObjectifModel();
     }
 
     public function index()
@@ -58,8 +58,8 @@ class ObjectifsController extends BaseController
         }
 
         $target = $utilisateurId > 0
-            ? site_url('objectifs?utilisateur_id=' . $utilisateurId)
-            : site_url('objectifs');
+            ? site_url('suggestions?objectif_id=' . $objectifId . '&utilisateur_id=' . $utilisateurId)
+            : site_url('suggestions?objectif_id=' . $objectifId);
 
         return redirect()->to($target)
             ->with('success', 'Objectif sélectionné: ' . $objectif['type'] . '.');

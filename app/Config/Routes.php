@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'LoginController::index');
 $routes->get('objectifs', 'ObjectifsController::index');
 $routes->post('objectifs/submit', 'ObjectifsController::submit');
+$routes->get('suggestions', 'SuggestionController::index');
 
 $routes->post('login', 'LoginController::process');
 $routes->post('save', 'LoginController::save');

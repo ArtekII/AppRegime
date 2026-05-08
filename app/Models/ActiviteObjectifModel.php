@@ -4,17 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UtilisateursObjectifsModel extends Model
+class ActiviteObjectifModel extends Model
 {
-    protected $table            = 'utilisateurs_objectifs';
+    protected $table            = 'activite_objectif';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'utilisateur_id',
+        'activite_id',
         'objectif_id',
+        'duree_jours',
+        'frequence_par_semaine',
+        'duree_minutes_par_seance',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -25,7 +28,14 @@ class UtilisateursObjectifsModel extends Model
 
     protected $useTimestamps = false;
 
-    protected $validationRules      = [];
+    protected $validationRules = [
+        'activite_id'                => 'required|is_natural_no_zero',
+        'objectif_id'                => 'required|is_natural_no_zero',
+        'duree_jours'                => 'required|is_natural_no_zero',
+        'frequence_par_semaine'      => 'required|is_natural_no_zero',
+        'duree_minutes_par_seance'   => 'required|is_natural_no_zero',
+    ];
+
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -40,19 +50,11 @@ class UtilisateursObjectifsModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function setObjectifForUser(int $utilisateurId, int $objectifId): bool
+    public function getActivitesByObjectifId(int $objectifId): array
     {
-        $existing = $this->where('utilisateur_id', $utilisateurId)->first();
-
-        if ($existing === null) {
-            return $this->insert([
-                'utilisateur_id' => $utilisateurId,
-                'objectif_id' => $objectifId,
-            ]) !== false;
-        }
-
-        return $this->update((int) $existing['id'], [
-            'objectif_id' => $objectifId,
-        ]);
+        return $this->select('activite_objectif.*, activite_sportive.nom as activite_nom')
+            ->join('activite_sportive', 'activite_sportive.id = activite_objectif.activite_id')
+            ->where('activite_objectif.objectif_id', $objectifId)
+            ->findAll();
     }
 }
