@@ -23,9 +23,9 @@
         </ul>
     <?php endif; ?>
 
-    <section class="section">
-        <h2>Cr&eacute;er un nouveau code</h2>
-        <form action="<?= base_url('code/store') ?>" method="post">
+    <section class="dashboard-card">
+        <h2>Creer un nouveau code</h2>
+        <form action="<?= site_url('code/store') ?>" method="post" class="settings-form-row">
             <?= csrf_field() ?>
 
             <p>
@@ -36,7 +36,7 @@
                     name="code"
                     minlength="3"
                     maxlength="50"
-                    value="<?= old('code') ?>"
+                    value="<?= esc(old('code')) ?>"
                     required
                 >
             </p>
@@ -49,49 +49,82 @@
                     name="montant"
                     step="0.01"
                     min="0.01"
-                    value="<?= old('montant') ?>"
+                    value="<?= esc(old('montant')) ?>"
                     required
                 >
             </p>
 
-            <button type="submit">Enregistrer</button>
+            <p class="settings-submit"><button type="submit">Enregistrer</button></p>
         </form>
     </section>
 
-    <section class="section">
-        <h2>Codes disponibles</h2>
-        <?php $codesDisponibles = array_filter($codes, static fn ($code) => ! (bool) $code['utilise']); ?>
-        <?php if (! empty($codesDisponibles)): ?>
+    <section class="dashboard-card">
+        <h2>Codes existants</h2>
+
+        <?php if (empty($codes)): ?>
+            <p>Aucun code enregistre.</p>
+        <?php else: ?>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Code</th>
                         <th>Montant</th>
-                        <th>Action</th>
+                        <th>Etat</th>
+                        <th>Actions admin</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($codesDisponibles as $code): ?>
+                    <?php foreach ($codes as $code): ?>
+                        <form id="code-form-<?= esc($code['id']) ?>" action="<?= site_url('code/update/' . $code['id']) ?>" method="post">
+                            <?= csrf_field() ?>
+                        </form>
                         <tr>
                             <td><?= esc($code['id']) ?></td>
-                            <td><?= esc($code['code']) ?></td>
-                            <td><?= number_format((float) $code['montant'], 2, ',', ' ') ?> EUR</td>
                             <td>
-                                <form action="<?= base_url('code/use') ?>" method="post">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="code_id" value="<?= esc($code['id']) ?>">
-                                    <button type="submit">Utiliser</button>
-                                </form>
+                                <input
+                                    form="code-form-<?= esc($code['id']) ?>"
+                                    type="text"
+                                    name="code"
+                                    minlength="3"
+                                    maxlength="50"
+                                    value="<?= esc($code['code']) ?>"
+                                    required
+                                >
+                            </td>
+                            <td>
+                                <input
+                                    form="code-form-<?= esc($code['id']) ?>"
+                                    type="number"
+                                    name="montant"
+                                    step="0.01"
+                                    min="0.01"
+                                    value="<?= esc($code['montant']) ?>"
+                                    required
+                                >
+                            </td>
+                            <td>
+                                <label class="code-status">
+                                    <input
+                                        form="code-form-<?= esc($code['id']) ?>"
+                                        type="checkbox"
+                                        name="utilise"
+                                        value="1"
+                                        <?= ! empty($code['utilise']) ? 'checked' : '' ?>
+                                    >
+                                    Utilise
+                                </label>
+                            </td>
+                            <td>
+                                <span class="code-actions">
+                                    <button form="code-form-<?= esc($code['id']) ?>" type="submit">Modifier</button>
+                                    <a href="<?= site_url('code/delete/' . $code['id']) ?>" onclick="return confirm('Supprimer ce code ?')">Supprimer</a>
+                                </span>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php else: ?>
-            <p>Aucun code disponible.</p>
         <?php endif; ?>
     </section>
-
-    <p><a href="<?= site_url('dashboard') ?>">Retourner au tableau de bord</a></p>
 <?= $this->endSection() ?>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\AbonnementGoldModel;
 use App\Models\ActiviteObjectifModel;
 use App\Models\ObjectifModel;
 use App\Models\RegimeObjectifModel;
@@ -11,6 +12,8 @@ use App\Models\UserModel;
 
 class SuggestionController extends BaseController
 {
+    private const GOLD_DISCOUNT_RATE = 0.15;
+
     public function index()
     {
         $objectifsModel = new ObjectifModel();
@@ -81,6 +84,8 @@ class SuggestionController extends BaseController
             'ecartImcCible' => $ecartImcCible,
             'regimes' => $regimes,
             'activites' => $activites,
+            'isGold' => $this->userHasGold($utilisateurId),
+            'goldDiscountRate' => self::GOLD_DISCOUNT_RATE,
         ]);
     }
 
@@ -124,6 +129,7 @@ class SuggestionController extends BaseController
         $profil = $this->buildProfilData($utilisateur, $utilisateurObjectif);
         $regimes = $regimeObjectifModel->getRegimesByObjectifId($objectifId);
         $activites = $activiteObjectifModel->getActivitesByObjectifId($objectifId);
+        $isGold = $this->userHasGold($userId);
 
         $pdf = new \FPDF();
         $pdf->SetAutoPageBreak(true, 15);
@@ -161,7 +167,18 @@ class SuggestionController extends BaseController
             $this->writePdfLine($pdf, '  Composition: viandes ' . $regime['pourcentage_viandes'] . '%, poissons ' . $regime['pourcentage_poissons'] . '%, volailles ' . $regime['pourcentage_volailles'] . '%.');
             $this->writePdfLine($pdf, '  Poids cible: ' . $regime['poids_min'] . ' kg a ' . $regime['poids_max'] . ' kg.');
             $this->writePdfLine($pdf, '  Duree: ' . $regime['duree_jours'] . ' jours.');
-            $this->writePdfLine($pdf, '  Prix: ' . (! empty($regime['prix']) ? number_format((float) $regime['prix'], 2, ',', ' ') . ' Ar' : 'non disponible') . '.');
+            if (! empty($regime['prix'])) {
+                $prixInitial = (float) $regime['prix'];
+                $prixFinal = $this->applyGoldDiscount($prixInitial, $isGold);
+                $prixText = number_format($prixFinal, 2, ',', ' ') . ' Ar';
+                if ($isGold) {
+                    $prixText .= ' (remise Gold 15%, prix initial: ' . number_format($prixInitial, 2, ',', ' ') . ' Ar)';
+                }
+            } else {
+                $prixText = 'non disponible';
+            }
+
+            $this->writePdfLine($pdf, '  Prix: ' . $prixText . '.');
             $pdf->Ln(1);
         }
 
@@ -235,6 +252,26 @@ class SuggestionController extends BaseController
         $converted = iconv('UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $text);
 
         return $converted !== false ? $converted : $text;
+    }
+
+    private function userHasGold(int $userId): bool
+    {
+        if ($userId <= 0) {
+            return false;
+        }
+
+        return (new AbonnementGoldModel())
+            ->where('utilisateur_id', $userId)
+            ->first() !== null;
+    }
+
+    private function applyGoldDiscount(float $price, bool $isGold): float
+    {
+        if (! $isGold) {
+            return $price;
+        }
+
+        return round($price * (1 - self::GOLD_DISCOUNT_RATE), 2);
     }
 
     private function getCategorieImc(float $imc): string

@@ -15,6 +15,7 @@
                     <a href="<?= site_url('accueil') ?>">Accueil</a>
                     <a href="<?= site_url('suggestions') ?>">Suggestions</a>
                     <a href="<?= site_url('code/use') ?>">Utiliser un code</a>
+                    <a href="<?= site_url('paiement/achat-gold') ?>">Gold</a>
                     <a href="<?= site_url('deconnexion') ?>">Deconnexion</a>
                 </div>
             </nav>

@@ -31,7 +31,7 @@ class ObjectifModel extends Model
     protected $validationMessages = [
         'type' => [
             'required' => 'Le champ "type" est obligatoire.',
-            'in_list'  => 'Le type d\'objectif sélectionné est invalide.',
+            'in_list'  => 'Le type d\'objectif selectionne est invalide.',
         ],
     ];
 

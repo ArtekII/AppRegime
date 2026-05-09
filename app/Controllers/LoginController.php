@@ -9,16 +9,28 @@ class LoginController extends BaseController
 {
     public function index()
     {
+        if (session()->get('is_logged_in')) {
+            return $this->redirectAuthenticatedUser();
+        }
+
         return redirect()->to(site_url('connexion'));
     }
 
     public function login()
     {
+        if (session()->get('is_logged_in')) {
+            return $this->redirectAuthenticatedUser();
+        }
+
         return view('auth/login');
     }
 
     public function register()
     {
+        if (session()->get('is_logged_in')) {
+            return $this->redirectAuthenticatedUser();
+        }
+
         return view('auth/register');
     }
 
@@ -99,5 +111,14 @@ class LoginController extends BaseController
             'user_role' => $user['role'],
             'solde' => $user['solde'],
         ]);
+    }
+
+    private function redirectAuthenticatedUser()
+    {
+        if (session()->get('user_role') === 'admin') {
+            return redirect()->to(site_url('dashboard'));
+        }
+
+        return redirect()->to(site_url('accueil'));
     }
 }

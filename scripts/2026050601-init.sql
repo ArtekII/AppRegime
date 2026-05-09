@@ -14,6 +14,15 @@ CREATE TABLE IF NOT EXISTS utilisateur (
     solde DECIMAL(10,2) NOT NULL DEFAULT 0.00
 );
 
+CREATE TABLE IF NOT EXISTS app_settings (
+    setting_key VARCHAR(100) PRIMARY KEY,
+    setting_value VARCHAR(255) NOT NULL
+);
+
+INSERT INTO app_settings (setting_key, setting_value)
+SELECT 'gold_price', '10000.00'
+WHERE NOT EXISTS (SELECT 1 FROM app_settings WHERE setting_key = 'gold_price');
+
 CREATE TABLE IF NOT EXISTS statut (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL

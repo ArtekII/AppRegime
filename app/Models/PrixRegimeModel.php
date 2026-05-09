@@ -29,7 +29,7 @@ class PrixRegimeModel extends Model
     protected $validationRules = [
         'duree_jours' => 'required|is_natural_no_zero',
         'regime_id'   => 'required|is_natural_no_zero',
-        'prix'        => 'required|decimal',
+        'prix'        => 'required|numeric|greater_than[0]',
     ];
 
     protected $validationMessages   = [];

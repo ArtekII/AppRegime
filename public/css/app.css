@@ -63,6 +63,23 @@ form {
     margin: 8px 0 0;
 }
 
+.price-original {
+    color: #6b7280;
+    margin-right: 6px;
+    text-decoration: line-through;
+}
+
+.discount-badge {
+    background: #fef3c7;
+    border-radius: 999px;
+    color: #92400e;
+    display: inline-block;
+    font-size: .85rem;
+    font-weight: 700;
+    margin-left: 6px;
+    padding: 3px 8px;
+}
+
 select,
 button,
 input[type="submit"],
@@ -426,6 +443,31 @@ td {
 
 .compact-table {
     margin-top: 12px;
+}
+
+.settings-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-bottom: 24px;
+}
+
+.settings-form-row {
+    align-items: end;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.settings-submit {
+    margin-bottom: 28px;
+}
+
+.code-status,
+.code-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
 }
 
 @media (max-width: 820px) {

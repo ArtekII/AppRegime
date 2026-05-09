@@ -1,28 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une activité</title>
-</head>
-<body>
-    <h1>Créer une activité sportive</h1>
+<?= $this->extend('layouts/admin') ?>
 
-    <form action="<?= base_url('activite/store') ?>" method="post">
-        <?= csrf_field() ?>
+<?= $this->section('title') ?>Creer une activite<?= $this->endSection() ?>
 
-        <p>
-            <label for="nom">Nom:</label>
-            <input type="text" id="nom" name="nom" required>
-        </p>
+<?= $this->section('page_header') ?>
+    <h1>Creer une activite sportive</h1>
+<?= $this->endSection() ?>
 
-        <p>
-            <label for="calories_brulees_par_heure">Calories brûlées par heure:</label>
-            <input type="number" id="calories_brulees_par_heure" name="calories_brulees_par_heure" step="0.1" required>
-        </p>
+<?= $this->section('content') ?>
+    <section class="dashboard-card">
+        <form action="<?= site_url('activite/store') ?>" method="post">
+            <?= csrf_field() ?>
 
-        <input type="submit" value="Créer">
-        <a href="<?= base_url('activite') ?>"><button type="button">Annuler</button></a>
-    </form>
-</body>
-</html>
+            <p>
+                <label for="nom">Nom</label><br>
+                <input type="text" id="nom" name="nom" value="<?= esc(old('nom')) ?>" required>
+            </p>
+
+            <p>
+                <label for="calories_brulees_par_heure">Calories brulees par heure</label><br>
+                <input type="number" id="calories_brulees_par_heure" name="calories_brulees_par_heure" step="0.1" value="<?= esc(old('calories_brulees_par_heure')) ?>" required>
+            </p>
+
+            <button type="submit">Creer</button>
+            <a href="<?= site_url('activite') ?>">Annuler</a>
+        </form>
+    </section>
+<?= $this->endSection() ?>

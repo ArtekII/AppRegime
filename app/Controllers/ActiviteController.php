@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ActiviteModel;
+use App\Models\ActiviteObjectifModel;
+use App\Models\ActiviteSportiveModel;
 
 class ActiviteController extends BaseController
 {
-    protected $activiteModel;
+    protected ActiviteModel $activiteModel;
 
     public function __construct()
     {
@@ -16,8 +18,9 @@ class ActiviteController extends BaseController
 
     public function index()
     {
-        $activites = $this->activiteModel->findAll();
-        return view('activites/index', ['activites' => $activites]);
+        return view('activites/index', [
+            'activites' => $this->activiteModel->findAll(),
+        ]);
     }
 
     public function create()
@@ -27,58 +30,61 @@ class ActiviteController extends BaseController
 
     public function store()
     {
-        $data = [
-            'nom' => $this->request->getPost('nom'),
-            'calories_brulees_par_heure' => $this->request->getPost('calories_brulees_par_heure'),
-        ];
+        if (! $this->activiteModel->insert($this->getActiviteDataFromRequest())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', implode(' ', $this->activiteModel->errors()) ?: 'Creation impossible.');
+        }
 
-        $this->activiteModel->insert($data);
-        return redirect()->to('/activite')->with('success', 'Activité créée avec succès');
+        return redirect()->to(site_url('activite'))->with('success', 'Activite creee avec succes.');
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $activite = $this->activiteModel->find($id);
-        if (!$activite) {
-            return redirect()->to('/activite')->with('error', 'Activité non trouvée');
+
+        if ($activite === null) {
+            return redirect()->to(site_url('activite'))->with('error', 'Activite non trouvee.');
         }
+
         return view('activites/show', ['activite' => $activite]);
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $activite = $this->activiteModel->find($id);
-        if (!$activite) {
-            return redirect()->to('/activite')->with('error', 'Activité non trouvée');
+
+        if ($activite === null) {
+            return redirect()->to(site_url('activite'))->with('error', 'Activite non trouvee.');
         }
+
         return view('activites/edit', ['activite' => $activite]);
     }
 
-    public function update($id)
+    public function update(int $id)
     {
-        $activite = $this->activiteModel->find($id);
-        if (!$activite) {
-            return redirect()->to('/activite')->with('error', 'Activité non trouvée');
+        if ($this->activiteModel->find($id) === null) {
+            return redirect()->to(site_url('activite'))->with('error', 'Activite non trouvee.');
         }
 
-        $data = [
-            'nom' => $this->request->getPost('nom'),
-            'calories_brulees_par_heure' => $this->request->getPost('calories_brulees_par_heure'),
-        ];
+        if (! $this->activiteModel->update($id, $this->getActiviteDataFromRequest())) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', implode(' ', $this->activiteModel->errors()) ?: 'Modification impossible.');
+        }
 
-        $this->activiteModel->update($id, $data);
-        return redirect()->to('/activite')->with('success', 'Activité modifiée avec succès');
+        return redirect()->to(site_url('activite'))->with('success', 'Activite modifiee avec succes.');
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
-        $activite = $this->activiteModel->find($id);
-        if (!$activite) {
-            return redirect()->to('/activite')->with('error', 'Activité non trouvée');
+        if ($this->activiteModel->find($id) === null) {
+            return redirect()->to(site_url('activite'))->with('error', 'Activite non trouvee.');
         }
 
         $this->activiteModel->delete($id);
-        return redirect()->to('/activite')->with('success', 'Activité supprimée avec succès');
+
+        return redirect()->to(site_url('activite'))->with('success', 'Activite supprimee avec succes.');
     }
 
     public function details(int $id)
@@ -106,5 +112,13 @@ class ActiviteController extends BaseController
                 ->orderBy('activite_objectif.duree_jours', 'ASC')
                 ->findAll(),
         ]);
+    }
+
+    private function getActiviteDataFromRequest(): array
+    {
+        return [
+            'nom' => $this->request->getPost('nom'),
+            'calories_brulees_par_heure' => $this->request->getPost('calories_brulees_par_heure'),
+        ];
     }
 }
