@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 
-<?= $this->section('title') ?>Pages D'accueil<?= $this->endSection() ?>
+<?= $this->section('title') ?>Pages de suggestions<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
     <h1>Bienvenue! Nous avons des suggestions pr&ecirc;tes &agrave; &ecirc;tre choisies.</h1>
@@ -53,28 +53,6 @@
     </form>
 
     <?php if ($objectifId > 0): ?>
-        <?php if (! empty($utilisateur) && $imc !== null): ?>
-            <section class="profile">
-                <h2>Votre profil</h2>
-                <p>
-                    <?= esc($utilisateur['nom']) ?><br>
-                    Taille: <?= esc($utilisateur['taille']) ?> cm<br>
-                    Poids: <?= esc($utilisateur['poids']) ?> kg<br>
-                    IMC: <strong><?= esc($imc) ?></strong><br>
-                    Statut: <?= esc($categorieImc) ?>
-                    <?php if ($imcCible !== null && $poidsCible !== null): ?>
-                        <br>IMC cible: <strong><?= esc($imcCible) ?></strong>
-                        <br>Poids cible estime: <?= esc($poidsCible) ?> kg
-                        <?php if ($imcIdealAtteint === true): ?>
-                            <br><span class="indicator indicator-ok">IMC ideal atteint</span>
-                        <?php elseif ($ecartImcCible !== null): ?>
-                            <br><span class="indicator indicator-progress">Ecart avec l'IMC cible: <?= esc($ecartImcCible) ?></span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </p>
-            </section>
-        <?php endif; ?>
-
         <div class="suggestions">
             <section class="section">
                 <h2>Suggestions R&eacute;gimes</h2>

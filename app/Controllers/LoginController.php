@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UtilisateurObjectifModel;
 use App\Models\UserModel;
 
 class LoginController extends BaseController
@@ -48,8 +47,11 @@ class LoginController extends BaseController
                 ->with('error', implode(' ', $userModel->errors()) ?: 'Inscription impossible pour le moment.');
         }
 
-        return redirect()->to(site_url('objectifs?utilisateur_id=' . $userId))
-            ->with('success', 'Inscription terminee. Choisissez maintenant votre objectif.');
+        $user = $userModel->find($userId);
+        $this->connectUser($user);
+
+        return redirect()->to(site_url('accueil'))
+            ->with('success', 'Inscription terminee. Bienvenue sur votre page d\'accueil.');
     }
 
     public function authenticate()
@@ -70,19 +72,24 @@ class LoginController extends BaseController
             return redirect()->back()->with('error', 'Email ou mot de passe incorrect.');
         }
 
-        $utilisateurObjectifModel = new UtilisateurObjectifModel();
-        $utilisateurObjectif = $utilisateurObjectifModel
-            ->where('utilisateur_id', (int) $user['id'])
-            ->orderBy('id', 'DESC')
-            ->first();
+        $this->connectUser($user);
 
-        if ($utilisateurObjectif !== null) {
-            return redirect()->to(site_url(
-                'suggestions?objectif_id=' . $utilisateurObjectif['objectif_id'] . '&utilisateur_id=' . $user['id']
-            ))->with('success', 'Connexion reussie. Voici vos suggestions.');
+        return redirect()->to(site_url('accueil'))
+            ->with('success', 'Connexion reussie.');
+    }
+
+    private function connectUser(?array $user): void
+    {
+        if ($user === null) {
+            return;
         }
 
-        return redirect()->to(site_url('objectifs?utilisateur_id=' . $user['id']))
-            ->with('success', 'Connexion reussie. Choisissez votre objectif.');
+        session()->set([
+            'is_logged_in' => true,
+            'user_id' => (int) $user['id'],
+            'user_name' => $user['nom'],
+            'user_role' => $user['role'],
+            'solde' => $user['solde'],
+        ]);
     }
 }

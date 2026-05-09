@@ -16,7 +16,7 @@ class SuggestionController extends BaseController
         $objectifsModel = new ObjectifModel();
         $objectifs = $objectifsModel->findAll();
         $objectifId = (int) $this->request->getGet('objectif_id');
-        $utilisateurId = (int) $this->request->getGet('utilisateur_id');
+        $utilisateurId = (int) ($this->request->getGet('utilisateur_id') ?? session()->get('user_id'));
         $regimes = [];
         $activites = [];
         $utilisateur = null;
