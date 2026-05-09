@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
 use App\Models\AbonnementGoldModel;
+use App\Models\AppSettingModel;
+use App\Models\UserModel;
 
 class PaiementController extends BaseController
 {
-    protected $userModel;
-    protected $abonnementGoldModel;
+    protected UserModel $userModel;
+    protected AbonnementGoldModel $abonnementGoldModel;
 
     public function __construct()
     {
@@ -19,47 +20,61 @@ class PaiementController extends BaseController
 
     public function achatGold()
     {
-        $prixGold = 9.99;
-        return view('paiement/achat_gold', ['prixGold' => $prixGold]);
+        $prixGold = $this->getPrixGold();
+
+        return view('paiement/achat_gold', [
+            'prixGold' => $prixGold,
+            'utilisateur' => $this->userModel->find((int) session()->get('user_id')),
+        ]);
     }
 
     public function traiterAchat()
     {
-        $utilisateurId = $this->request->getPost('utilisateur_id');
+        $utilisateurId = (int) session()->get('user_id');
         $methode = $this->request->getPost('methode_paiement');
-        $montant = $this->request->getPost('montant');
+        $montant = (float) $this->request->getPost('montant');
+        $prixGold = $this->getPrixGold();
 
         $utilisateur = $this->userModel->find($utilisateurId);
-        if (!$utilisateur) {
-            return redirect()->back()->with('error', 'Utilisateur non trouvé');
+        if ($utilisateur === null) {
+            return redirect()->to(site_url('connexion'))->with('error', 'Utilisateur non trouve.');
         }
 
-        $prixGold = 9.99;
-        if ($montant != $prixGold) {
-            return redirect()->back()->with('error', 'Montant incorrect');
+        if (abs($montant - $prixGold) > 0.001) {
+            return redirect()->back()->with('error', 'Montant incorrect.');
+        }
+
+        $abonnementExistant = $this->abonnementGoldModel
+            ->where('utilisateur_id', $utilisateurId)
+            ->first();
+
+        if ($abonnementExistant !== null) {
+            return redirect()->back()->with('error', 'Vous avez deja un abonnement Gold actif.');
         }
 
         if ($methode === 'carte') {
-            $numeroCarte = $this->request->getPost('numero_carte');
-            $cvv = $this->request->getPost('cvv');
-            $dateExpiration = $this->request->getPost('date_expiration');
-
-            if (!$this->validerCarte($numeroCarte, $cvv, $dateExpiration)) {
-                return redirect()->back()->with('error', 'Données de carte invalides');
+            if (! $this->validerCarte(
+                (string) $this->request->getPost('numero_carte'),
+                (string) $this->request->getPost('cvv'),
+                (string) $this->request->getPost('date_expiration')
+            )) {
+                return redirect()->back()->with('error', 'Donnees de carte invalides.');
             }
         } elseif ($methode === 'paypal') {
-            $emailPaypal = $this->request->getPost('email_paypal');
-            if (!filter_var($emailPaypal, FILTER_VALIDATE_EMAIL)) {
-                return redirect()->back()->with('error', 'Email PayPal invalide');
+            $emailPaypal = (string) $this->request->getPost('email_paypal');
+            if (! filter_var($emailPaypal, FILTER_VALIDATE_EMAIL)) {
+                return redirect()->back()->with('error', 'Email PayPal invalide.');
             }
         } elseif ($methode === 'portefeuille') {
-            $soldeActuel = $utilisateur['solde'];
+            $soldeActuel = (float) $utilisateur['solde'];
             if ($soldeActuel < $prixGold) {
-                return redirect()->back()->with('error', 'Solde insuffisant');
+                return redirect()->back()->with('error', 'Solde insuffisant.');
             }
+
             $this->userModel->update($utilisateurId, ['solde' => $soldeActuel - $prixGold]);
+            session()->set('solde', $soldeActuel - $prixGold);
         } else {
-            return redirect()->back()->with('error', 'Méthode de paiement invalide');
+            return redirect()->back()->with('error', 'Methode de paiement invalide.');
         }
 
         $this->abonnementGoldModel->insert([
@@ -67,17 +82,20 @@ class PaiementController extends BaseController
             'prix' => $prixGold,
         ]);
 
-        return redirect()->to('/')->with('success', 'Abonnement Gold activé avec succès');
+        return redirect()->to(site_url('accueil'))->with('success', 'Abonnement Gold active avec succes.');
     }
 
-    protected function validerCarte($numero, $cvv, $dateExp)
+    protected function validerCarte(string $numero, string $cvv, string $dateExp): bool
     {
-        if (strlen($numero) < 13 || strlen($numero) > 19) {
-            return false;
-        }
-        if (strlen($cvv) < 3 || strlen($cvv) > 4) {
-            return false;
-        }
-        return true;
+        return strlen($numero) >= 13
+            && strlen($numero) <= 19
+            && strlen($cvv) >= 3
+            && strlen($cvv) <= 4
+            && $dateExp !== '';
+    }
+
+    private function getPrixGold(): float
+    {
+        return (float) (new AppSettingModel())->getValue('gold_price', '9.99');
     }
 }

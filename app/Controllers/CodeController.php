@@ -44,6 +44,40 @@ class CodeController extends BaseController
         return redirect()->to(base_url('code'))->with('success', 'Code montant enregistre avec succes.');
     }
 
+    public function update(int $id)
+    {
+        $codeModel = new CodeModel();
+
+        if ($codeModel->find($id) === null) {
+            return redirect()->to(site_url('code'))->with('error', 'Code introuvable.');
+        }
+
+        $data = [
+            'code' => $this->request->getPost('code'),
+            'montant' => $this->request->getPost('montant'),
+            'utilise' => $this->request->getPost('utilise') ? 1 : 0,
+        ];
+
+        if (! $codeModel->update($id, $data)) {
+            return redirect()->back()->withInput()->with('errors', $codeModel->errors());
+        }
+
+        return redirect()->to(site_url('code'))->with('success', 'Code modifie avec succes.');
+    }
+
+    public function delete(int $id)
+    {
+        $codeModel = new CodeModel();
+
+        if ($codeModel->find($id) === null) {
+            return redirect()->to(site_url('code'))->with('error', 'Code introuvable.');
+        }
+
+        $codeModel->delete($id);
+
+        return redirect()->to(site_url('code'))->with('success', 'Code supprime avec succes.');
+    }
+
     public function useCode()
     {
         $codeId = (int) $this->request->getPost('code_id');

@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc((string)($activite['nom'] ?? '')) ?></title>
-</head>
-<body>
+<?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('title') ?>Detail activite<?= $this->endSection() ?>
+
+<?= $this->section('page_header') ?>
+    <h1><?= esc($activite['nom'] ?? 'Activite') ?></h1>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <?php $activite = $activite ?? []; ?>
-    <h1><?= esc((string)($activite['nom'] ?? '')) ?></h1>
 
-    <p><strong>ID:</strong> <?= $activite['id'] ?></p>
-    <p><strong>Calories brûlées par heure:</strong> <?= $activite['calories_brulees_par_heure'] ?></p>
-    <p><strong>Date de création:</strong> <?= $activite['date_creation'] ?></p>
+    <section class="dashboard-card">
+        <p><strong>ID:</strong> <?= esc($activite['id']) ?></p>
+        <p><strong>Calories brulees par heure:</strong> <?= esc($activite['calories_brulees_par_heure']) ?></p>
 
-    <a href="<?= base_url('activite/edit/' . $activite['id']) ?>"><button>Modifier</button></a>
-    <a href="<?= base_url('activite/delete/' . $activite['id']) ?>" onclick="return confirm('Êtes-vous sûr?')"><button>Supprimer</button></a>
-    <a href="<?= base_url('activite') ?>"><button>Retour</button></a>
-</body>
-</html>
+        <p>
+            <a href="<?= site_url('activite/edit/' . $activite['id']) ?>">Modifier</a>
+            <a href="<?= site_url('activite/delete/' . $activite['id']) ?>" onclick="return confirm('Supprimer cette activite ?')">Supprimer</a>
+            <a href="<?= site_url('activite') ?>">Retour</a>
+        </p>
+    </section>
+<?= $this->endSection() ?>

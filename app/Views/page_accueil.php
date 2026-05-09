@@ -45,5 +45,6 @@
         <h2>Solde</h2>
         <p>Ajoutez du credit a votre compte avec un code.</p>
         <p><a href="<?= site_url('code/use') ?>">Utiliser un code</a></p>
+        <p><a href="<?= site_url('paiement/achat-gold') ?>">Acheter l'abonnement Gold</a></p>
     </section>
 <?= $this->endSection() ?>

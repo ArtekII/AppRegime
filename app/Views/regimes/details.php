@@ -26,6 +26,9 @@
 
     <section class="section">
         <h2>Prix disponibles</h2>
+        <?php if (! empty($isGold)): ?>
+            <p><span class="discount-badge">Gold actif: 15% de remise appliquee sur tous les regimes.</span></p>
+        <?php endif; ?>
 
         <?php if (empty($prixRegimes)): ?>
             <p>Aucun prix disponible pour ce r&eacute;gime.</p>
@@ -40,9 +43,21 @@
                 </thead>
                 <tbody>
                     <?php foreach ($prixRegimes as $prixRegime): ?>
+                        <?php
+                            $prixInitial = (float) $prixRegime['prix'];
+                            $prixFinal = ! empty($isGold) ? round($prixInitial * (1 - (float) $goldDiscountRate), 2) : $prixInitial;
+                        ?>
                         <tr>
                             <td><?= esc($prixRegime['duree_jours']) ?> jours</td>
-                            <td><?= number_format((float) $prixRegime['prix'], 2, ',', ' ') ?> Ar</td>
+                            <td>
+                                <?php if (! empty($isGold)): ?>
+                                    <span class="price-original"><?= number_format($prixInitial, 2, ',', ' ') ?> Ar</span>
+                                    <strong><?= number_format($prixFinal, 2, ',', ' ') ?> Ar</strong>
+                                    <span class="discount-badge">Gold -15%</span>
+                                <?php else: ?>
+                                    <?= number_format($prixFinal, 2, ',', ' ') ?> Ar
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <form action="<?= site_url('regimes/acheter') ?>" method="post" class="inline-form">
                                     <?= csrf_field() ?>

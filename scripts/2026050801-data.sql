@@ -96,6 +96,66 @@ INSERT INTO activite_sportive (nom, calories_brulees_par_heure)
 SELECT 'Musculation', 380
 WHERE NOT EXISTS (SELECT 1 FROM activite_sportive WHERE nom = 'Musculation');
 
+INSERT INTO code_montant (code, montant)
+SELECT 'WELCOME5000', 5000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'WELCOME5000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'BOOST10000', 10000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'BOOST10000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'FIT15000', 15000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'FIT15000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'HEALTH20000', 20000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'HEALTH20000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'REGIME25000', 25000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'REGIME25000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'SPORT30000', 30000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'SPORT30000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'GOLD35000', 35000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'GOLD35000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'BALANCE40000', 40000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'BALANCE40000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'ENERGY45000', 45000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'ENERGY45000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'VITAL50000', 50000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'VITAL50000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'PLUS55000', 55000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'PLUS55000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'ACTIVE60000', 60000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'ACTIVE60000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'NUTRI65000', 65000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'NUTRI65000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'TRAIN70000', 70000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'TRAIN70000');
+
+INSERT INTO code_montant (code, montant)
+SELECT 'PREMIUM75000', 75000.00
+WHERE NOT EXISTS (SELECT 1 FROM code_montant WHERE code = 'PREMIUM75000');
+
 INSERT INTO utilisateur_objectif (utilisateur_id, objectif_id, statut_id)
 SELECT u.id, o.id, s.id
 FROM utilisateur u

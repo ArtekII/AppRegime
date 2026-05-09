@@ -75,7 +75,17 @@
                             Dur&eacute;e: <?= esc($regime['duree_jours']) ?> jours<br>
                             Prix:
                             <?php if (! empty($regime['prix'])): ?>
-                                <?= number_format((float) $regime['prix'], 2, ',', ' ') ?> Ar
+                                <?php
+                                    $prixInitial = (float) $regime['prix'];
+                                    $prixFinal = ! empty($isGold) ? round($prixInitial * (1 - (float) $goldDiscountRate), 2) : $prixInitial;
+                                ?>
+                                <?php if (! empty($isGold)): ?>
+                                    <span class="price-original"><?= number_format($prixInitial, 2, ',', ' ') ?> Ar</span>
+                                    <strong><?= number_format($prixFinal, 2, ',', ' ') ?> Ar</strong>
+                                    <span class="discount-badge">Gold -15%</span>
+                                <?php else: ?>
+                                    <?= number_format($prixFinal, 2, ',', ' ') ?> Ar
+                                <?php endif; ?>
                             <?php else: ?>
                                 non disponible
                             <?php endif; ?>

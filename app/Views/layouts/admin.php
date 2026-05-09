@@ -13,9 +13,9 @@
         <nav class="dashboard-nav" aria-label="Navigation admin">
             <a class="<?= $currentPath === 'dashboard' ? 'is-active' : '' ?>" href="<?= site_url('dashboard') ?>">Tableau de bord</a>
             <a class="<?= $currentPath === 'code' ? 'is-active' : '' ?>" href="<?= site_url('code') ?>">Gestion des codes</a>
-            <a href="#">Gestion des regimes</a>
-            <a href="#">Gestion des activites sportif</a>
-            <a href="#">Gestion des parametres</a>
+            <a class="<?= str_starts_with($currentPath, 'regime') ? 'is-active' : '' ?>" href="<?= site_url('regime') ?>">Gestion des regimes</a>
+            <a class="<?= str_starts_with($currentPath, 'activite') ? 'is-active' : '' ?>" href="<?= site_url('activite') ?>">Gestion des activites sportif</a>
+            <a class="<?= str_starts_with($currentPath, 'parametres') ? 'is-active' : '' ?>" href="<?= site_url('parametres') ?>">Gestion des parametres</a>
         </nav>
         <a class="dashboard-logout" href="<?= site_url('deconnexion') ?>">Deconnexion</a>
     </aside>
