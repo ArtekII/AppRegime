@@ -1,49 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activités sportives</title>
-</head>
-<body>
+<?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('title') ?>Gestion des activites<?= $this->endSection() ?>
+
+<?= $this->section('page_header') ?>
+    <h1>Gestion des activites sportives</h1>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <?php $activites = $activites ?? []; ?>
-    <h1>Gestion des Activités sportives</h1>
 
-    <?php if(session()->getFlashdata('success')): ?>
-        <p style="color: green;"><?= session()->getFlashdata('success') ?></p>
+    <?php if (session()->getFlashdata('success')): ?>
+        <p class="alert-success"><?= esc(session()->getFlashdata('success')) ?></p>
     <?php endif; ?>
 
-    <?php if(session()->getFlashdata('error')): ?>
-        <p style="color: red;"><?= session()->getFlashdata('error') ?></p>
+    <?php if (session()->getFlashdata('error')): ?>
+        <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
     <?php endif; ?>
 
-    <a href="<?= base_url('activite/create') ?>"><button>Ajouter une activité</button></a>
+    <p><a class="button-link" href="<?= site_url('activite/create') ?>">Ajouter une activite</a></p>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Calories brûlées/heure</th>
-                <th>Date de création</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($activites as $activite): ?>
+    <section class="dashboard-card">
+        <table>
+            <thead>
                 <tr>
-                    <td><?= $activite['id'] ?></td>
-                    <td><?= esc((string)($activite['nom'] ?? '')) ?></td>
-                    <td><?= $activite['calories_brulees_par_heure'] ?></td>
-                    <td><?= $activite['date_creation'] ?></td>
-                    <td>
-                        <a href="<?= base_url('activite/show/' . $activite['id']) ?>"><button>Voir</button></a>
-                        <a href="<?= base_url('activite/edit/' . $activite['id']) ?>"><button>Modifier</button></a>
-                        <a href="<?= base_url('activite/delete/' . $activite['id']) ?>" onclick="return confirm('Êtes-vous sûr?')"><button>Supprimer</button></a>
-                    </td>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Calories brulees/heure</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
-</html>
+            </thead>
+            <tbody>
+                <?php if (empty($activites)): ?>
+                    <tr><td colspan="4">Aucune activite enregistree.</td></tr>
+                <?php endif; ?>
+
+                <?php foreach ($activites as $activite): ?>
+                    <tr>
+                        <td><?= esc($activite['id']) ?></td>
+                        <td><?= esc($activite['nom']) ?></td>
+                        <td><?= esc($activite['calories_brulees_par_heure']) ?></td>
+                        <td>
+                            <a href="<?= site_url('activite/show/' . $activite['id']) ?>">Voir</a>
+                            <a href="<?= site_url('activite/edit/' . $activite['id']) ?>">Modifier</a>
+                            <a href="<?= site_url('activite/delete/' . $activite['id']) ?>" onclick="return confirm('Supprimer cette activite ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
+<?= $this->endSection() ?>

@@ -1,29 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier une activité</title>
-</head>
-<body>
+<?= $this->extend('layouts/admin') ?>
+
+<?= $this->section('title') ?>Modifier une activite<?= $this->endSection() ?>
+
+<?= $this->section('page_header') ?>
+    <h1>Modifier une activite sportive</h1>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <?php $activite = $activite ?? []; ?>
-    <h1>Modifier une activité sportive</h1>
 
-    <form action="<?= base_url('activite/update/' . $activite['id']) ?>" method="post">
-        <?= csrf_field() ?>
+    <section class="dashboard-card">
+        <form action="<?= site_url('activite/update/' . $activite['id']) ?>" method="post">
+            <?= csrf_field() ?>
 
-        <p>
-            <label for="nom">Nom:</label>
-            <input type="text" id="nom" name="nom" value="<?= esc($activite['nom']) ?>" required>
-        </p>
+            <p>
+                <label for="nom">Nom</label><br>
+                <input type="text" id="nom" name="nom" value="<?= esc(old('nom') ?? $activite['nom']) ?>" required>
+            </p>
 
-        <p>
-            <label for="calories_brulees_par_heure">Calories brûlées par heure:</label>
-            <input type="number" id="calories_brulees_par_heure" name="calories_brulees_par_heure" step="0.1" value="<?= $activite['calories_brulees_par_heure'] ?>" required>
-        </p>
+            <p>
+                <label for="calories_brulees_par_heure">Calories brulees par heure</label><br>
+                <input type="number" id="calories_brulees_par_heure" name="calories_brulees_par_heure" step="0.1" value="<?= esc(old('calories_brulees_par_heure') ?? $activite['calories_brulees_par_heure']) ?>" required>
+            </p>
 
-        <input type="submit" value="Mettre à jour">
-        <a href="<?= base_url('activite') ?>"><button type="button">Annuler</button></a>
-    </form>
-</body>
-</html>
+            <button type="submit">Mettre a jour</button>
+            <a href="<?= site_url('activite') ?>">Annuler</a>
+        </form>
+    </section>
+<?= $this->endSection() ?>
