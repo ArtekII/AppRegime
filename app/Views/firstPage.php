@@ -46,6 +46,10 @@
             <?= csrf_field() ?>
             <p>Email: <input type="email" name="login_email" required></p>
             <p>Mot de passe: <input type="password" name="login_password" required></p>
+            
+            <?php if(session()->getFlashdata('error')): ?>
+                <p style="color: red;"><?= session()->getFlashdata('error') ?></p>
+            <?php endif; ?>
 
             <input type="submit" value="Se connecter">
         </form>
