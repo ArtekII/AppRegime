@@ -14,63 +14,62 @@
     <section class="stat-grid" aria-label="Statistiques">
         <article class="stat-card">
             <span>Nombre total utilisateurs</span>
-            <strong>128</strong>
+            <strong><?= number_format((int) $stats['totalUsers'], 0, ',', ' ') ?></strong>
         </article>
         <article class="stat-card">
             <span>Nombre abonnes Gold</span>
-            <strong>42</strong>
+            <strong><?= number_format((int) $stats['goldSubscribers'], 0, ',', ' ') ?></strong>
         </article>
         <article class="stat-card">
             <span>Revenus totaux</span>
-            <strong>8 450 000 Ar</strong>
+            <strong><?= number_format((float) $stats['totalRevenue'], 2, ',', ' ') ?> Ar</strong>
         </article>
         <article class="stat-card">
             <span>Nombre regimes</span>
-            <strong>18</strong>
+            <strong><?= number_format((int) $stats['totalRegimes'], 0, ',', ' ') ?></strong>
         </article>
         <article class="stat-card">
             <span>Nombre activites sportives</span>
-            <strong>24</strong>
+            <strong><?= number_format((int) $stats['totalActivites'], 0, ',', ' ') ?></strong>
         </article>
         <article class="stat-card">
             <span>Nombre codes utilises</span>
-            <strong>76</strong>
+            <strong><?= number_format((int) $stats['usedCodes'], 0, ',', ' ') ?></strong>
         </article>
         <article class="stat-card">
             <span>Nombre objectifs actifs</span>
-            <strong>93</strong>
+            <strong><?= number_format((int) $stats['activeObjectifs'], 0, ',', ' ') ?></strong>
         </article>
     </section>
 
     <section class="dashboard-charts">
         <article class="dashboard-card">
             <h2>Objectifs</h2>
-            <div class="pie-chart" aria-label="Reduire poids 55%, IMC ideal 30%, Augmenter poids 15%"></div>
+            <div class="pie-chart" style="background: <?= esc($pieGradient, 'attr') ?>" aria-label="Repartition des objectifs"></div>
             <ul class="chart-legend">
-                <li><span class="legend-dot reduce"></span>Reduire poids <strong>55%</strong></li>
-                <li><span class="legend-dot imc"></span>IMC ideal <strong>30%</strong></li>
-                <li><span class="legend-dot gain"></span>Augmenter poids <strong>15%</strong></li>
+                <?php foreach ($objectifDistribution as $item): ?>
+                    <li>
+                        <span class="legend-dot <?= esc($item['class']) ?>"></span>
+                        <?= esc($item['label']) ?>
+                        <strong><?= number_format((float) $item['percent'], 1, ',', ' ') ?>%</strong>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </article>
 
         <article class="dashboard-card">
             <h2>Inscriptions</h2>
-            <svg class="line-chart" viewBox="0 0 420 220" role="img" aria-label="Inscriptions par jour">
-                <line x1="40" y1="180" x2="390" y2="180"></line>
-                <line x1="40" y1="28" x2="40" y2="180"></line>
-                <polyline points="40,132 155,84 270,156 385,60"></polyline>
-                <circle cx="40" cy="132" r="4"></circle>
-                <circle cx="155" cy="84" r="4"></circle>
-                <circle cx="270" cy="156" r="4"></circle>
-                <circle cx="385" cy="60" r="4"></circle>
-                <text x="34" y="202">1 Mai</text>
-                <text x="148" y="202">2 Mai</text>
-                <text x="263" y="202">3 Mai</text>
-                <text x="378" y="202">4 Mai</text>
-                <text x="14" y="136">3</text>
-                <text x="14" y="88">5</text>
-                <text x="14" y="160">2</text>
-                <text x="14" y="64">6</text>
+            <svg class="line-chart" viewBox="0 0 <?= esc($lineChart['width']) ?> <?= esc($lineChart['height']) ?>" role="img" aria-label="Inscriptions par jour">
+                <line x1="<?= esc($lineChart['left']) ?>" y1="<?= esc($lineChart['bottom']) ?>" x2="<?= esc($lineChart['right']) ?>" y2="<?= esc($lineChart['bottom']) ?>"></line>
+                <line x1="<?= esc($lineChart['left']) ?>" y1="<?= esc($lineChart['top']) ?>" x2="<?= esc($lineChart['left']) ?>" y2="<?= esc($lineChart['bottom']) ?>"></line>
+                <?php if (! empty($lineChart['polyline'])): ?>
+                    <polyline points="<?= esc($lineChart['polyline'], 'attr') ?>"></polyline>
+                    <?php foreach ($lineChart['points'] as $point): ?>
+                        <circle cx="<?= esc($point['x']) ?>" cy="<?= esc($point['y']) ?>" r="4"></circle>
+                        <text x="<?= esc($point['x'] - 12) ?>" y="202"><?= esc($point['label']) ?></text>
+                        <text x="<?= esc($point['x'] - 4) ?>" y="<?= esc($point['y'] - 10) ?>"><?= esc($point['count']) ?></text>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </svg>
             <table class="compact-table">
                 <thead>
@@ -80,9 +79,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>1 Mai</td><td>3</td></tr>
-                    <tr><td>2 Mai</td><td>5</td></tr>
-                    <tr><td>3 Mai</td><td>2</td></tr>
+                    <?php if (empty($inscriptions)): ?>
+                        <tr><td colspan="2">Aucune inscription disponible.</td></tr>
+                    <?php endif; ?>
+
+                    <?php foreach ($inscriptions as $inscription): ?>
+                        <tr>
+                            <td><?= esc($inscription['label']) ?></td>
+                            <td><?= esc($inscription['count']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </article>
@@ -101,27 +107,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Reduire poids</td>
-                    <td>24</td>
-                    <td>39</td>
-                    <td>4</td>
-                    <td>67</td>
-                </tr>
-                <tr>
-                    <td>IMC ideal</td>
-                    <td>14</td>
-                    <td>20</td>
-                    <td>3</td>
-                    <td>37</td>
-                </tr>
-                <tr>
-                    <td>Augmenter poids</td>
-                    <td>17</td>
-                    <td>6</td>
-                    <td>1</td>
-                    <td>24</td>
-                </tr>
+                <?php foreach ($objectifGenreRows as $row): ?>
+                    <tr>
+                        <td><?= esc($row['label']) ?></td>
+                        <td><?= esc($row['Homme']) ?></td>
+                        <td><?= esc($row['Femme']) ?></td>
+                        <td><?= esc($row['Autre']) ?></td>
+                        <td><?= esc($row['total']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </section>
