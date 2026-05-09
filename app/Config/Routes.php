@@ -13,6 +13,7 @@ $routes->get('accueil', 'Home::index', ['filter' => 'auth']);
 $routes->get('objectifs', 'ObjectifsController::index', ['filter' => 'auth']);
 $routes->post('objectifs/submit', 'ObjectifsController::submit', ['filter' => 'auth']);
 $routes->get('suggestions', 'SuggestionController::index', ['filter' => 'auth']);
+$routes->get('suggestions/export-pdf', 'SuggestionController::exportPdf', ['filter' => 'auth']);
 $routes->get('regimes/details/(:num)', 'RegimeController::details/$1', ['filter' => 'auth']);
 $routes->get('activites/details/(:num)', 'ActiviteController::details/$1', ['filter' => 'auth']);
 $routes->get('code', 'CodeController::index', ['filter' => 'role:admin']);
