@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="<?= base_url('css/app.css') ?>">
 </head>
 <body>
+    <?php if (session()->get('is_logged_in')): ?>
+        <header class="site-header">
+            <nav class="nav" aria-label="Navigation principale">
+                <a class="nav-brand" href="<?= site_url('accueil') ?>">Brandy</a>
+                <div class="nav-links">
+                    <a href="<?= site_url('accueil') ?>">Accueil</a>
+                    <a href="<?= site_url('suggestions') ?>">Suggestions</a>
+                    <a href="<?= site_url('code/use') ?>">Utiliser un code</a>
+                    <?php if (session()->get('user_role') === 'admin'): ?>
+                        <a href="<?= site_url('code') ?>">Gestion codes</a>
+                    <?php endif; ?>
+                    <a href="<?= site_url('deconnexion') ?>">Deconnexion</a>
+                </div>
+            </nav>
+        </header>
+    <?php endif; ?>
+
     <main class="page">
         <?= $this->renderSection('content') ?>
     </main>

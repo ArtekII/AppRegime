@@ -9,22 +9,17 @@ class LoginController extends BaseController
 {
     public function index()
     {
-        return view('auth/authpage1');
+        return redirect()->to(site_url('connexion'));
     }
 
-    public function process()
+    public function login()
     {
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
-        $genre = $this->request->getPost('genre');
-        $nom = $this->request->getPost('nom');
+        return view('auth/login');
+    }
 
-        return view('auth/authpage2', [
-            'email' => $email,
-            'password' => $password,
-            'genre' => $genre,
-            'nom' => $nom,
-        ]);
+    public function register()
+    {
+        return view('auth/register');
     }
 
     public function save()
@@ -76,6 +71,14 @@ class LoginController extends BaseController
 
         return redirect()->to(site_url('accueil'))
             ->with('success', 'Connexion reussie.');
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+
+        return redirect()->to(site_url('connexion'))
+            ->with('success', 'Vous etes deconnecte.');
     }
 
     private function connectUser(?array $user): void
