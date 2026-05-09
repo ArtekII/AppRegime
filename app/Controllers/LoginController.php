@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\UtilisateurObjectifModel;
 use App\Models\UserModel;
 
 class LoginController extends BaseController
@@ -32,7 +33,7 @@ class LoginController extends BaseController
         $data = [
             'email'        => $this->request->getPost('email'),
             'nom'          => $this->request->getPost('nom'),
-            'mot_de_passe' => $this->request->getPost('password'),
+            'mot_de_passe' => password_hash((string) $this->request->getPost('password'), PASSWORD_DEFAULT),
             'genre'        => $this->request->getPost('genre'),
             'taille'       => $this->request->getPost('taille'),
             'poids'        => $this->request->getPost('poids'),
@@ -42,27 +43,46 @@ class LoginController extends BaseController
         $userId = $userModel->insert($data, true);
 
         if ($userId === false) {
-            return redirect()->back()->withInput()->with('error', 'Inscription impossible pour le moment.');
+            return redirect()->back()
+                ->withInput()
+                ->with('error', implode(' ', $userModel->errors()) ?: 'Inscription impossible pour le moment.');
         }
 
         return redirect()->to(site_url('objectifs?utilisateur_id=' . $userId))
-            ->with('success', 'Inscription terminée. Choisissez maintenant votre objectif.');
+            ->with('success', 'Inscription terminee. Choisissez maintenant votre objectif.');
     }
 
     public function authenticate()
     {
         $email = $this->request->getPost('login_email');
-        $password = $this->request->getPost('login_password');
+        $password = (string) $this->request->getPost('login_password');
 
         $userModel = new UserModel();
-
         $user = $userModel->where('email', $email)->first();
 
-        if ($user && $user['mot_de_passe'] === $password) {
-            return "Connexion réussie ! Bienvenue " . esc($user['nom']) . ".";
-        } else {
+        $passwordIsValid = $user !== null
+            && (
+                password_verify($password, $user['mot_de_passe'])
+                || hash_equals($user['mot_de_passe'], $password)
+            );
+
+        if (! $passwordIsValid) {
             return redirect()->back()->with('error', 'Email ou mot de passe incorrect.');
         }
-    }
 
+        $utilisateurObjectifModel = new UtilisateurObjectifModel();
+        $utilisateurObjectif = $utilisateurObjectifModel
+            ->where('utilisateur_id', (int) $user['id'])
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        if ($utilisateurObjectif !== null) {
+            return redirect()->to(site_url(
+                'suggestions?objectif_id=' . $utilisateurObjectif['objectif_id'] . '&utilisateur_id=' . $user['id']
+            ))->with('success', 'Connexion reussie. Voici vos suggestions.');
+        }
+
+        return redirect()->to(site_url('objectifs?utilisateur_id=' . $user['id']))
+            ->with('success', 'Connexion reussie. Choisissez votre objectif.');
+    }
 }
