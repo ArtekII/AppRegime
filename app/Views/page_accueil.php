@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 
-<?= $this->section('title') ?>Accueil<?= $this->endSection() ?>
+<?= $this->section('title') ?>Accueil - Balanced Regimen And Nutrition Dashboard for You<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
     <h1>Bienvenue<?= ! empty($utilisateur['nom']) ? ', ' . esc($utilisateur['nom']) : '' ?></h1>
