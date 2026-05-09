@@ -69,6 +69,11 @@ class LoginController extends BaseController
 
         $this->connectUser($user);
 
+        if (($user['role'] ?? null) === 'admin') {
+            return redirect()->to(site_url('dashboard'))
+                ->with('success', 'Connexion reussie.');
+        }
+
         return redirect()->to(site_url('accueil'))
             ->with('success', 'Connexion reussie.');
     }

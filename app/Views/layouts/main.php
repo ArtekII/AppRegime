@@ -15,9 +15,6 @@
                     <a href="<?= site_url('accueil') ?>">Accueil</a>
                     <a href="<?= site_url('suggestions') ?>">Suggestions</a>
                     <a href="<?= site_url('code/use') ?>">Utiliser un code</a>
-                    <?php if (session()->get('user_role') === 'admin'): ?>
-                        <a href="<?= site_url('code') ?>">Gestion codes</a>
-                    <?php endif; ?>
                     <a href="<?= site_url('deconnexion') ?>">Deconnexion</a>
                 </div>
             </nav>

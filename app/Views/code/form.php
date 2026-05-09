@@ -1,10 +1,12 @@
-<?= $this->extend('layouts/main') ?>
+<?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('title') ?>Gestion des codes<?= $this->endSection() ?>
 
-<?= $this->section('content') ?>
+<?= $this->section('page_header') ?>
     <h1>Gestion des codes</h1>
+<?= $this->endSection() ?>
 
+<?= $this->section('content') ?>
     <?php if (session()->getFlashdata('error')): ?>
         <p class="alert-error"><?= esc(session()->getFlashdata('error')) ?></p>
     <?php endif; ?>
@@ -91,5 +93,5 @@
         <?php endif; ?>
     </section>
 
-    <p><a href="<?= site_url('accueil') ?>">Retourner &agrave; l'accueil</a></p>
+    <p><a href="<?= site_url('dashboard') ?>">Retourner au tableau de bord</a></p>
 <?= $this->endSection() ?>
