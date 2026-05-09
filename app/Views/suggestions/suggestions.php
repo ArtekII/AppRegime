@@ -53,6 +53,12 @@
     </form>
 
     <?php if ($objectifId > 0): ?>
+        <p>
+            <a class="button-link" href="<?= site_url('suggestions/export-pdf?objectif_id=' . $objectifId) ?>">
+                Exporter en PDF
+            </a>
+        </p>
+
         <div class="suggestions">
             <section class="section">
                 <h2>Suggestions R&eacute;gimes</h2>

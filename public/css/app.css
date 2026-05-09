@@ -8,6 +8,15 @@ a {
     color: #1d4ed8;
 }
 
+.button-link {
+    background: #2563eb;
+    border-radius: 6px;
+    color: #fff;
+    display: inline-block;
+    padding: 9px 12px;
+    text-decoration: none;
+}
+
 .site-header {
     border-bottom: 1px solid #e5e7eb;
     background: #fff;
