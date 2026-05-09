@@ -1,11 +1,11 @@
 USE app_regime_db;
 
 INSERT INTO utilisateur (nom, email, mot_de_passe, genre, taille, poids, role, solde)
-SELECT 'Alice Martin', 'alice.martin@test.local', 'password', 'Femme', 165, 62.5, 'utilisateur', 25.00
+SELECT 'Alice Martin', 'alice.martin@test.local', 'password', 'Femme', 165, 62.5, 'utilisateur', 25000.00
 WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE email = 'alice.martin@test.local');
 
 INSERT INTO utilisateur (nom, email, mot_de_passe, genre, taille, poids, role, solde)
-SELECT 'Bruno Bernard', 'bruno.bernard@test.local', 'password', 'Homme', 178, 82.0, 'utilisateur', 10.00
+SELECT 'Bruno Bernard', 'bruno.bernard@test.local', 'password', 'Homme', 178, 82.0, 'utilisateur', 60000.00
 WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE email = 'bruno.bernard@test.local');
 
 INSERT INTO utilisateur (nom, email, mot_de_passe, genre, taille, poids, role, solde)
@@ -13,11 +13,11 @@ SELECT 'Camille Durand', 'camille.durand@test.local', 'password', 'Autre', 170, 
 WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE email = 'camille.durand@test.local');
 
 INSERT INTO utilisateur (nom, email, mot_de_passe, genre, taille, poids, role, solde)
-SELECT 'Diane Leroy', 'diane.leroy@test.local', 'password', 'Femme', 160, 54.0, 'utilisateur', 50.00
+SELECT 'Diane Leroy', 'diane.leroy@test.local', 'password', 'Femme', 160, 54.0, 'utilisateur', 50000.00
 WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE email = 'diane.leroy@test.local');
 
 INSERT INTO utilisateur (nom, email, mot_de_passe, genre, taille, poids, role, solde)
-SELECT 'Etienne Moreau', 'etienne.moreau@test.local', 'password', 'Homme', 183, 91.0, 'admin', 100.00
+SELECT 'Etienne Moreau', 'etienne.moreau@test.local', 'password', 'Homme', 183, 91.0, 'admin', 10000.00
 WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE email = 'etienne.moreau@test.local');
 
 INSERT INTO regime (nom, pourcentage_viandes, pourcentage_poissons, pourcentage_volailles)
