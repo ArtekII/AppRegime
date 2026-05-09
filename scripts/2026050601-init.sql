@@ -107,15 +107,22 @@ CREATE TABLE IF NOT EXISTS activite_objectif (
     FOREIGN KEY (objectif_id) REFERENCES objectif(id)
 );
 
-CREATE TABLE IF NOT EXISTS code (
+CREATE TABLE IF NOT EXISTS code_montant (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(50) NOT NULL UNIQUE,
+    montant FLOAT NOT NULL,
+    utilise BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS code_historique (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    code VARCHAR(255) NOT NULL UNIQUE,
-    utilisateur_id INT NULL,
-    montant DECIMAL(10,2) NOT NULL,
+    code_id INT NOT NULL,
+    utilisateur_id INT NOT NULL,
     utilise BOOLEAN NOT NULL DEFAULT FALSE,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_utilisation TIMESTAMP NULL,
-    FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id) ON DELETE CASCADE
+    UNIQUE KEY unique_code_per_user (code_id, utilisateur_id),
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id) ON DELETE CASCADE,
+    FOREIGN KEY (code_id) REFERENCES code_montant(id)
 );
 
 CREATE TABLE IF NOT EXISTS abonnements_gold (

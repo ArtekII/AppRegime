@@ -19,7 +19,7 @@ class ObjectifsController extends BaseController
 
     public function index()
     {
-        $utilisateurId = (int) $this->request->getGet('utilisateur_id');
+        $utilisateurId = (int) (session()->get('user_id') ?? $this->request->getGet('utilisateur_id'));
 
         return view('objectifs/objectifs', [
             'objectifs' => $this->objectifsModel->getSelectableObjectifs(),
@@ -29,7 +29,7 @@ class ObjectifsController extends BaseController
 
     public function submit()
     {
-        $utilisateurId = (int) $this->request->getPost('utilisateur_id');
+        $utilisateurId = (int) ($this->request->getPost('utilisateur_id') ?? session()->get('user_id'));
         $objectifId = (int) $this->request->getPost('objectif');
 
         $validationRules = [
