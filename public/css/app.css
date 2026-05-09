@@ -58,6 +58,11 @@ form {
     margin-bottom: 28px;
 }
 
+.inline-form {
+    display: inline-block;
+    margin: 8px 0 0;
+}
+
 select,
 button,
 input[type="submit"],

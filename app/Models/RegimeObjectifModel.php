@@ -54,7 +54,8 @@ class RegimeObjectifModel extends Model
     {
         return $this->select(
             'regime_objectif.*, regime.nom as regime_nom, regime.pourcentage_viandes, '
-            . 'regime.pourcentage_poissons, regime.pourcentage_volailles, prix_regimes.prix as prix'
+            . 'regime.pourcentage_poissons, regime.pourcentage_volailles, '
+            . 'prix_regimes.id as prix_regime_id, prix_regimes.prix as prix'
         )
             ->join('regime', 'regime.id = regime_objectif.regime_id')
             ->join(
