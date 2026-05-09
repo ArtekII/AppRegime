@@ -81,6 +81,13 @@
                             <?php endif; ?>
                             <br>
                             <a href="<?= site_url('regimes/details/' . $regime['regime_id']) ?>">Voir les d&eacute;tails</a>
+                            <?php if (! empty($regime['prix_regime_id']) && ! empty($regime['prix'])): ?>
+                                <form action="<?= site_url('regimes/acheter') ?>" method="post" class="inline-form">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="prix_regime_id" value="<?= esc($regime['prix_regime_id']) ?>">
+                                    <button type="submit">Acheter</button>
+                                </form>
+                            <?php endif; ?>
                         </p>
                     </div>
                 <?php endforeach; ?>

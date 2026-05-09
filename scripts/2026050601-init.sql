@@ -78,6 +78,16 @@ CREATE TABLE IF NOT EXISTS prix_regimes (
     FOREIGN KEY (regime_id) REFERENCES regime(id)
 );
 
+CREATE TABLE IF NOT EXISTS achat_regime (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utilisateur_id INT NOT NULL,
+    prix_regime_id INT NOT NULL,
+    montant DECIMAL(10,2) NOT NULL,
+    date_achat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id) ON DELETE CASCADE,
+    FOREIGN KEY (prix_regime_id) REFERENCES prix_regimes(id)
+);
+
 CREATE TABLE IF NOT EXISTS activite_sportive (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
