@@ -9,6 +9,7 @@ $routes->get('/', 'LoginController::index');
 $routes->get('connexion', 'LoginController::login');
 $routes->get('inscription', 'LoginController::register');
 $routes->get('deconnexion', 'LoginController::logout', ['filter' => 'auth']);
+$routes->view('dashboard', 'dashboard', ['filter' => 'role:admin']);
 $routes->get('accueil', 'Home::index', ['filter' => 'auth']);
 $routes->get('objectifs', 'ObjectifsController::index', ['filter' => 'auth']);
 $routes->post('objectifs/submit', 'ObjectifsController::submit', ['filter' => 'auth']);
