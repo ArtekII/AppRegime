@@ -21,7 +21,7 @@
                 Genre: <?= esc($utilisateur['genre']) ?><br>
                 Taille: <?= esc($utilisateur['taille']) ?> cm<br>
                 Poids: <?= esc($utilisateur['poids']) ?> kg<br>
-                Solde: <strong><?= number_format((float) $utilisateur['solde'], 2, ',', ' ') ?> EUR</strong>
+                Solde: <strong><?= number_format((float) $utilisateur['solde'], 2, ',', ' ') ?> Ar</strong>
             </p>
         </section>
     <?php endif; ?>
@@ -39,5 +39,11 @@
             <p>Choisissez un objectif pour obtenir vos suggestions personnalis&eacute;es.</p>
             <p><a href="<?= site_url('objectifs') ?>">Choisir mon objectif</a></p>
         <?php endif; ?>
+    </section>
+
+    <section class="section">
+        <h2>Solde</h2>
+        <p>Ajoutez du credit a votre compte avec un code.</p>
+        <p><a href="<?= site_url('code/use') ?>">Utiliser un code</a></p>
     </section>
 <?= $this->endSection() ?>

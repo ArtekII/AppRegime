@@ -19,6 +19,15 @@ class CodeController extends BaseController
         ]);
     }
 
+    public function useForm()
+    {
+        $codeModel = new CodeModel();
+
+        return view('code/use', [
+            'codes' => $codeModel->where('utilise', 0)->findAll(),
+        ]);
+    }
+
     public function store()
     {
         $data = [

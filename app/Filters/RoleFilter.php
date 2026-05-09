@@ -11,7 +11,7 @@ class RoleFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if (! session()->get('is_logged_in')) {
-            return redirect()->to(site_url('/'))->with('error', 'Veuillez vous connecter.');
+            return redirect()->to(site_url('connexion'))->with('error', 'Veuillez vous connecter.');
         }
 
         $allowedRoles = $arguments ?? [];

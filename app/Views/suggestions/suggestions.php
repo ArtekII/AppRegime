@@ -3,7 +3,7 @@
 <?= $this->section('title') ?>Pages de suggestions<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-    <h1>Bienvenue! Nous avons des suggestions pr&ecirc;tes &agrave; &ecirc;tre choisies.</h1>
+    <h1>Nous avons des suggestions pr&ecirc;tes &agrave; &ecirc;tre choisies.</h1>
 
     <?php if (session()->getFlashdata('success')): ?>
         <p class="alert-success"><?= esc(session()->getFlashdata('success')) ?></p>

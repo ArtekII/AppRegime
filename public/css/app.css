@@ -1,11 +1,48 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 32px;
+    margin: 0;
     color: #222;
 }
 
 a {
     color: #1d4ed8;
+}
+
+.site-header {
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.nav {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 980px;
+    padding: 14px 24px;
+}
+
+.nav-brand {
+    color: #111827;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.nav-links a {
+    text-decoration: none;
+}
+
+.page {
+    margin: 32px auto;
+    max-width: 980px;
+    padding: 0 24px;
 }
 
 form {
@@ -14,8 +51,26 @@ form {
 
 select,
 button,
-input[type="submit"] {
+input[type="submit"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="text"] {
     padding: 8px 10px;
+}
+
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="text"] {
+    box-sizing: border-box;
+    max-width: 420px;
+    width: 100%;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: .55;
 }
 
 table {
@@ -88,4 +143,80 @@ td {
 
 .is-hidden {
     display: none;
+}
+
+.auth-panel {
+    max-width: 560px;
+}
+
+.progress-wrap {
+    margin: 20px 0;
+}
+
+.progress-meta {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    background: #e5e7eb;
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar span {
+    background: #2563eb;
+    display: block;
+    height: 100%;
+    transition: width .2s ease;
+    width: 33%;
+}
+
+.steps {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.steps li {
+    border-bottom: 3px solid #d1d5db;
+    color: #6b7280;
+    padding-bottom: 8px;
+}
+
+.steps li.is-active,
+.steps li.is-complete {
+    border-color: #2563eb;
+    color: #111827;
+    font-weight: 700;
+}
+
+.step-panel {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 18px;
+}
+
+.step-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.inline-fieldset {
+    border: 0;
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.inline-fieldset label {
+    display: inline-block;
+    margin-right: 12px;
 }
