@@ -11,7 +11,7 @@
         <?php $currentPath = trim(service('uri')->getPath(), '/'); ?>
         <header class="site-header">
             <nav class="nav" aria-label="Navigation principale">
-                <a class="nav-brand" href="<?= site_url('accueil') ?>">Brandy</a>
+                <a class="nav-brand" href="<?= site_url('accueil') ?>"><span class="brand">BRANDY</span></a>
                 <div class="nav-links">
                     <a class="<?= $currentPath === 'accueil' ? 'is-active' : '' ?>" href="<?= site_url('accueil') ?>">Accueil</a>
                     <a class="<?= str_starts_with($currentPath, 'suggestions') ? 'is-active' : '' ?>" href="<?= site_url('suggestions') ?>">Suggestions</a>

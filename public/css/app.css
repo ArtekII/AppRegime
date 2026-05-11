@@ -701,3 +701,7 @@ tr:last-child td {
         flex-direction: column;
     }
 }
+
+.brand {
+    font-family:'Times New Roman', Times, serif
+}

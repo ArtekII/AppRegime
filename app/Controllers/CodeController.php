@@ -114,6 +114,6 @@ class CodeController extends BaseController
         $codeModel->update($codeId, ['utilise' => 1]);
 
         return redirect()->to(base_url('accueil'))
-            ->with('success', 'Code utilise avec succes. Montant ajoute: ' . $code['montant'] . ' EUR.');
+            ->with('success', 'Code utilise avec succes. Montant ajoute: ' . $code['montant'] . ' Ar.');
     }
 }

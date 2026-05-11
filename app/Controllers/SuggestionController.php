@@ -144,7 +144,7 @@ class SuggestionController extends BaseController
         $this->writePdfLine($pdf, 'Genre: ' . $utilisateur['genre']);
         $this->writePdfLine($pdf, 'Taille: ' . $utilisateur['taille'] . ' cm');
         $this->writePdfLine($pdf, 'Poids: ' . $utilisateur['poids'] . ' kg');
-        $this->writePdfLine($pdf, 'Solde: ' . number_format((float) $utilisateur['solde'], 2, ',', ' ') . ' EUR');
+        $this->writePdfLine($pdf, 'Solde: ' . number_format((float) $utilisateur['solde'], 2, ',', ' ') . ' Ar');
 
         if ($profil['imc'] !== null) {
             $this->writePdfLine($pdf, 'IMC: ' . $profil['imc'] . ' (' . $profil['categorieImc'] . ')');

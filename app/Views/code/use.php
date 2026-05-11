@@ -24,7 +24,7 @@
                     <?php foreach ($codes as $code): ?>
                         <tr>
                             <td><?= esc($code['code']) ?></td>
-                            <td><?= number_format((float) $code['montant'], 2, ',', ' ') ?> EUR</td>
+                            <td><?= number_format((float) $code['montant'], 2, ',', ' ') ?> Ar</td>
                             <td>
                                 <form action="<?= base_url('code/use') ?>" method="post">
                                     <?= csrf_field() ?>
